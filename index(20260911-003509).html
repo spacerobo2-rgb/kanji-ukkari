@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f1e8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>漢字、出てこない。</title>
+<style>
+:root{
+  --bg:#f6f1e8;
+  --paper:#fffdf8;
+  --ink:#2f2b26;
+  --muted:#7d756a;
+  --line:#e6ddd0;
+  --accent:#36594c;
+  --accent-soft:#e6efe9;
+  --gold:#b98945;
+  --danger:#a85b52;
+  --shadow:0 12px 30px rgba(64,51,38,.08);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+button{font:inherit}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.app{width:min(100%,620px);margin:0 auto;min-height:100vh;padding:20px 18px 34px}
+header{padding:14px 2px 20px}
+.brand{font-size:30px;font-weight:800;letter-spacing:.02em;margin:0}
+.tagline{margin:7px 0 0;color:var(--muted);font-size:14px}
+.screen{display:none}.screen.active{display:block}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:20px}
+.hero{padding:24px 20px 20px;margin-bottom:15px}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.today-label{font-size:13px;color:var(--muted)}
+.streak{font-size:14px;font-weight:700;color:var(--gold);white-space:nowrap}
+.big-score{font-size:44px;line-height:1;font-weight:800;margin:12px 0 4px}.big-score small{font-size:16px;color:var(--muted);font-weight:600}
+.sub{font-size:13px;color:var(--muted)}
+.menu{display:grid;gap:11px}
+.menu-btn{width:100%;border:1px solid var(--line);background:var(--paper);border-radius:18px;padding:17px 18px;text-align:left;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 18px rgba(64,51,38,.05);cursor:pointer}
+.menu-btn:active{transform:scale(.99)}
+.menu-title{font-size:17px;font-weight:800}.menu-desc{font-size:12px;color:var(--muted);margin-top:3px}.arrow{font-size:22px;color:var(--muted)}
+.menu-btn.primary{background:var(--accent);color:white;border-color:var(--accent)}.menu-btn.primary .menu-desc,.menu-btn.primary .arrow{color:#dce7e1}
+.section-title{font-size:13px;font-weight:800;color:var(--muted);margin:22px 3px 10px;text-transform:uppercase;letter-spacing:.06em}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.back{border:0;background:transparent;color:var(--accent);padding:8px 0;font-weight:750;cursor:pointer}.progress{font-size:13px;color:var(--muted)}
+.progressbar{height:7px;background:#e9e1d6;border-radius:999px;overflow:hidden;margin-bottom:14px}.progressbar span{display:block;height:100%;width:0;background:var(--accent);border-radius:inherit;transition:width .25s ease}
+.quiz-card{text-align:center;padding:27px 20px 22px;min-height:360px;display:flex;flex-direction:column;justify-content:center}
+.category{display:inline-block;align-self:center;font-size:12px;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:999px;margin-bottom:18px}
+.reading{font-size:36px;font-weight:850;letter-spacing:.06em;margin:5px 0 18px;word-break:keep-all}.example{font-size:15px;line-height:1.7;color:var(--muted);min-height:52px}
+.reveal{margin-top:24px;width:100%;border:0;background:var(--accent);color:white;border-radius:15px;padding:16px;font-weight:800;cursor:pointer}
+.answer-wrap{display:none;margin-top:10px}.answer-wrap.show{display:block}.answer-label{font-size:12px;color:var(--muted);margin-bottom:4px}.answer{font-size:48px;font-weight:850;letter-spacing:.04em;margin:4px 0 18px;line-height:1.2}
+.judge{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.judge button{border:1px solid var(--line);background:white;border-radius:14px;padding:12px 4px;font-size:13px;font-weight:750;cursor:pointer}.judge button.good{border-color:#b8d0c4;background:#edf5f0}.judge button.close{border-color:#e4cfaa;background:#fbf5e9}.judge button.bad{border-color:#e2beb9;background:#fbefed}
+.result{text-align:center;padding:30px 20px}.result-mark{font-size:52px}.result h2{font-size:25px;margin:8px 0}.result-score{font-size:50px;font-weight:850;margin:18px 0 4px}.result-note{color:var(--muted);font-size:14px;line-height:1.7}.result-actions{display:grid;gap:9px;margin-top:22px}.btn{border:1px solid var(--line);background:var(--paper);border-radius:14px;padding:14px;font-weight:800;cursor:pointer}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:18px}.stat-num{font-size:31px;font-weight:850}.stat-label{font-size:12px;color:var(--muted);margin-top:4px}.weak-list{margin-top:12px;display:grid;gap:8px}.weak-item{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:13px 15px;display:flex;justify-content:space-between;align-items:center}.weak-word{font-weight:800}.weak-read{font-size:12px;color:var(--muted);margin-top:2px}.weak-level{font-size:12px;color:var(--danger);font-weight:800}
+.empty{padding:24px;text-align:center;color:var(--muted);line-height:1.7}
+.error{display:none;background:#fff2ef;border:1px solid #efc8c1;color:#7d3d36;border-radius:14px;padding:13px 15px;font-size:13px;line-height:1.6;margin-bottom:13px}.error.show{display:block}
+.footer-note{text-align:center;color:#9b9287;font-size:11px;margin-top:22px;line-height:1.6}
+@media (max-width:380px){.brand{font-size:27px}.reading{font-size:32px}.answer{font-size:42px}.judge button{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1 class="brand">漢字、出てこない。</h1>
+    <p class="tagline">読めるのに、書けない漢字を取り戻す。</p>
+  </header>
+
+  <div id="loadError" class="error"></div>
+
+  <main>
+    <section id="home" class="screen active">
+      <div class="card hero">
+        <div class="hero-top">
+          <div class="today-label" id="todayText"></div>
+          <div class="streak" id="streakText">🔥 0日連続</div>
+        </div>
+        <div class="big-score"><span id="todayDone">0</span><small> 問</small></div>
+        <div class="sub">今日取り組んだ問題</div>
+      </div>
+
+      <div class="menu">
+        <button class="menu-btn primary" onclick="startDaily()">
+          <div><div class="menu-title">今日の5問</div><div class="menu-desc">毎日ちょっとだけ。今日の漢字トレーニング</div></div><div class="arrow">›</div>
+        </button>
+        <button class="menu-btn" onclick="startRandom(10)">
+          <div><div class="menu-title">10問チャレンジ</div><div class="menu-desc">ランダムに10問出題</div></div><div class="arrow">›</div>
+        </button>
+        <button class="menu-btn" onclick="startWeak()">
+          <div><div class="menu-title">苦手を復習</div><div class="menu-desc" id="weakDesc">「惜しい」「書けない」をもう一度</div></div><div class="arrow">›</div>
+        </button>
+      </div>
+
+      <div class="section-title">記録</div>
+      <div class="menu">
+        <button class="menu-btn" onclick="showStats()">
+          <div><div class="menu-title">成績を見る</div><div class="menu-desc">これまでの正答率と苦手漢字</div></div><div class="arrow">›</div>
+        </button>
+      </div>
+      <div class="footer-note">問題は <b>kanji.csv</b> を編集するだけで追加できます。</div>
+    </section>
+
+    <section id="quiz" class="screen">
+      <div class="topbar"><button class="back" onclick="quitQuiz()">‹ やめる</button><div class="progress" id="progressText"></div></div>
+      <div class="progressbar"><span id="progressFill"></span></div>
+      <div class="card quiz-card">
+        <div class="category" id="qCategory"></div>
+        <div class="reading" id="qReading"></div>
+        <div class="example" id="qExample"></div>
+        <button id="revealBtn" class="reveal" onclick="revealAnswer()">答えを見る</button>
+        <div id="answerWrap" class="answer-wrap">
+          <div class="answer-label">答え</div>
+          <div class="answer" id="qAnswer"></div>
+          <div class="judge">
+            <button class="good" onclick="judge('good')">✓ 書けた</button>
+            <button class="close" onclick="judge('close')">△ 惜しい</button>
+            <button class="bad" onclick="judge('bad')">× 書けない</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <div class="card result">
+        <div class="result-mark" id="resultMark">◎</div>
+        <h2>おつかれさま</h2>
+        <div class="result-score"><span id="resultGood">0</span>/<span id="resultTotal">0</span></div>
+        <div class="result-note" id="resultNote"></div>
+        <div class="result-actions">
+          <button class="btn primary" onclick="goHome()">トップへ戻る</button>
+          <button class="btn" onclick="retryLast()">同じ問題でもう一度</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="stats" class="screen">
+      <div class="topbar"><button class="back" onclick="goHome()">‹ 戻る</button><div></div></div>
+      <div class="stat-grid">
+        <div class="card stat"><div class="stat-num" id="statAnswered">0</div><div class="stat-label">これまでの回答数</div></div>
+        <div class="card stat"><div class="stat-num" id="statRate">0%</div><div class="stat-label">「書けた」率</div></div>
+        <div class="card stat"><div class="stat-num" id="statDays">0</div><div class="stat-label">学習した日数</div></div>
+        <div class="card stat"><div class="stat-num" id="statWeak">0</div><div class="stat-label">苦手漢字</div></div>
+      </div>
+      <div class="section-title">苦手漢字</div>
+      <div id="weakList" class="weak-list"></div>
+      <div style="height:10px"></div>
+      <button class="btn" style="width:100%" onclick="resetStats()">記録をリセット</button>
+    </section>
+  </main>
+</div>
+
+<script>
+const CSV_FILE = 'kanji.csv';
+const STORAGE_KEY = 'kanji-dekonai-v1';
+let words = [];
+let quizWords = [];
+let lastQuizWords = [];
+let qIndex = 0;
+let session = {good:0, close:0, bad:0};
+
+function defaultState(){return {total:0,good:0,close:0,bad:0,weak:{},days:{},lastStudyDate:'',streak:0};}
+function loadState(){try{return {...defaultState(),...(JSON.parse(localStorage.getItem(STORAGE_KEY))||{})};}catch(e){return defaultState();}}
+let state = loadState();
+function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+
+function parseCSV(text){
+  const rows=[]; let row=[], cell='', q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i], n=text[i+1];
+    if(c==='"'){
+      if(q && n==='"'){cell+='"';i++;} else q=!q;
+    }else if(c===',' && !q){row.push(cell);cell='';}
+    else if((c==='\n'||c==='\r') && !q){
+      if(c==='\r'&&n==='\n')i++;
+      row.push(cell);cell=''; if(row.some(v=>v.trim()!==''))rows.push(row); row=[];
+    }else cell+=c;
+  }
+  row.push(cell); if(row.some(v=>v.trim()!==''))rows.push(row);
+  if(rows.length<2)return [];
+  const headers=rows[0].map(x=>x.trim().replace(/^\uFEFF/,''));
+  return rows.slice(1).map(r=>Object.fromEntries(headers.map((h,i)=>[h,(r[i]??'').trim()]))).filter(x=>x.id&&x.reading&&x.answer);
+}
+
+async function loadWords(){
+  try{
+    const res=await fetch(CSV_FILE+'?v='+Date.now(),{cache:'no-store'});
+    if(!res.ok)throw new Error('CSVを読み込めませんでした');
+    words=parseCSV(await res.text());
+    if(!words.length)throw new Error('問題データが空です');
+  }catch(e){
+    document.getElementById('loadError').classList.add('show');
+    document.getElementById('loadError').innerHTML='kanji.csv を読み込めませんでした。GitHub Pages 上で <b>index.html と kanji.csv を同じ場所</b>に置いてください。';
+  }
+  refreshHome();
+}
+
+function todayKey(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function formatToday(){const d=new Date();return `${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）`;}
+function shuffle(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];}return x;}
+function hashString(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;}
+function seededDaily(list,count){
+  const arr=[...list]; let seed=hashString(todayKey());
+  function rnd(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr.slice(0,Math.min(count,arr.length));
+}
+
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function refreshHome(){
+  document.getElementById('todayText').textContent=formatToday();
+  document.getElementById('todayDone').textContent=state.days[todayKey()]||0;
+  document.getElementById('streakText').textContent=`🔥 ${state.streak||0}日連続`;
+  const wc=Object.values(state.weak||{}).filter(v=>v>0).length;
+  document.getElementById('weakDesc').textContent=wc?`苦手漢字 ${wc}語を優先して出題`:'「惜しい」「書けない」をもう一度';
+}
+function goHome(){refreshHome();showScreen('home');}
+
+function startDaily(){if(!words.length)return;beginQuiz(seededDaily(words,5));}
+function startRandom(n){if(!words.length)return;beginQuiz(shuffle(words).slice(0,Math.min(n,words.length)));}
+function startWeak(){
+  const weak=words.filter(w=>(state.weak[w.id]||0)>0).sort((a,b)=>(state.weak[b.id]||0)-(state.weak[a.id]||0));
+  if(!weak.length){alert('まだ苦手漢字はありません。「惜しい」「書けない」と答えた漢字がここに入ります。');return;}
+  beginQuiz(shuffle(weak).slice(0,Math.min(10,weak.length)));
+}
+function beginQuiz(list){
+  quizWords=[...list];lastQuizWords=[...list];qIndex=0;session={good:0,close:0,bad:0};showScreen('quiz');renderQuestion();
+}
+function renderQuestion(){
+  const w=quizWords[qIndex];
+  document.getElementById('progressText').textContent=`${qIndex+1} / ${quizWords.length}`;
+  document.getElementById('progressFill').style.width=`${(qIndex/quizWords.length)*100}%`;
+  document.getElementById('qCategory').textContent=w.category||'漢字';
+  document.getElementById('qReading').textContent=w.reading;
+  document.getElementById('qExample').textContent=w.example?`例：${w.example}`:'';
+  document.getElementById('qAnswer').textContent=w.answer;
+  document.getElementById('answerWrap').classList.remove('show');
+  document.getElementById('revealBtn').style.display='block';
+}
+function revealAnswer(){document.getElementById('revealBtn').style.display='none';document.getElementById('answerWrap').classList.add('show');}
+function judge(type){
+  const w=quizWords[qIndex];
+  session[type]++;state.total++;state[type]++;
+  if(type==='good') state.weak[w.id]=Math.max(0,(state.weak[w.id]||0)-1);
+  if(type==='close') state.weak[w.id]=Math.min(9,(state.weak[w.id]||0)+1);
+  if(type==='bad') state.weak[w.id]=Math.min(9,(state.weak[w.id]||0)+2);
+  const t=todayKey();state.days[t]=(state.days[t]||0)+1;updateStreak(t);saveState();
+  qIndex++;
+  if(qIndex>=quizWords.length)finishQuiz();else renderQuestion();
+}
+function updateStreak(t){
+  if(state.lastStudyDate===t)return;
+  const d=new Date();d.setHours(0,0,0,0);const y=new Date(d);y.setDate(d.getDate()-1);
+  const yesterday=todayKey(y);
+  state.streak=(state.lastStudyDate===yesterday)?(state.streak||0)+1:1;
+  state.lastStudyDate=t;
+}
+function finishQuiz(){
+  const total=quizWords.length, good=session.good, rate=total?good/total:0;
+  document.getElementById('resultGood').textContent=good;document.getElementById('resultTotal').textContent=total;
+  document.getElementById('resultMark').textContent=rate===1?'◎':rate>=.7?'○':rate>=.4?'△':'↻';
+  let note=rate===1?'全問「書けた」！しっかり身についています。':rate>=.7?'かなりいい感じ。惜しかった漢字は、また忘れたころに。':rate>=.4?'思い出せなかった漢字が今日の収穫です。':'ここからが伸びどころ。苦手復習にしっかり残しました。';
+  if(session.close+session.bad)note+=` 苦手に ${session.close+session.bad}語 追加・更新しました。`;
+  document.getElementById('resultNote').textContent=note;showScreen('result');
+}
+function retryLast(){if(lastQuizWords.length)beginQuiz(lastQuizWords);}
+function quitQuiz(){if(confirm('このチャレンジを終了しますか？'))goHome();}
+
+function showStats(){
+  const rate=state.total?Math.round(state.good/state.total*100):0;
+  const weak=words.filter(w=>(state.weak[w.id]||0)>0).sort((a,b)=>(state.weak[b.id]||0)-(state.weak[a.id]||0));
+  document.getElementById('statAnswered').textContent=state.total;
+  document.getElementById('statRate').textContent=rate+'%';
+  document.getElementById('statDays').textContent=Object.keys(state.days||{}).length;
+  document.getElementById('statWeak').textContent=weak.length;
+  const box=document.getElementById('weakList');box.innerHTML='';
+  if(!weak.length){box.innerHTML='<div class="card empty">まだ苦手漢字はありません。<br>問題で「惜しい」「書けない」を選ぶとここにたまります。</div>';}
+  else weak.slice(0,50).forEach(w=>{const n=state.weak[w.id]||0;const div=document.createElement('div');div.className='weak-item';div.innerHTML=`<div><div class="weak-word">${escapeHtml(w.answer)}</div><div class="weak-read">${escapeHtml(w.reading)}</div></div><div class="weak-level">苦手 ${Math.min(3,Math.ceil(n/2))}/3</div>`;box.appendChild(div);});
+  showScreen('stats');
+}
+function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function resetStats(){if(confirm('成績と苦手記録をすべてリセットしますか？')){state=defaultState();saveState();showStats();refreshHome();}}
+
+loadWords();
+</script>
+</body>
+</html>
