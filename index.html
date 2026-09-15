@@ -42,6 +42,35 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
 .day.full .paw-stamp{animation:pawBounce .5s ease}@keyframes pawBounce{0%{transform:scale(.55) rotate(-8deg);opacity:.2}70%{transform:scale(1.12) rotate(3deg)}100%{transform:scale(1) rotate(0)}}.day-num{position:relative;z-index:2}.day-count{position:absolute;right:4px;bottom:3px;font-size:8px;color:#8b7d76;z-index:2}.cal-legend{margin-top:12px;font-size:11px;color:#7f716a;line-height:1.7;background:#fff8e7;border-radius:13px;padding:9px 11px}
 .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.stat{padding:15px}.stat-num{font-size:29px;font-weight:950;color:#df596b}.stat-label{font-size:10.5px;color:var(--muted);margin-top:3px}.weak-list{display:grid;gap:8px}.weak-item{padding:12px 14px;display:flex;align-items:center;justify-content:space-between}.weak-word{font-size:17px;font-weight:950}.weak-read{font-size:11px;color:var(--muted);margin-top:2px}.weak-level{font-size:10px;font-weight:900;color:#b45360;background:#fff0f2;border-radius:999px;padding:5px 8px}.empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7}.notice{display:none;background:#fff7dc;border:1px solid #edd792;color:#6d5c3b;border-radius:13px;padding:9px 11px;font-size:11px;line-height:1.55;margin-bottom:10px}.notice.show{display:block}.about{padding:18px;line-height:1.8;font-size:13px}.about h3{margin:5px 0 9px;font-size:17px}.about .quote{background:#fff2c6;border-radius:14px;padding:12px 13px;font-weight:800;margin-top:12px}.hide{display:none!important}
 @media(max-width:380px){.brand{font-size:27px}.reading{font-size:34px}.mascot{width:104px;min-width:104px}.menu-title{font-size:15px}.genre-name{font-size:14px}}
+
+/* v7 FUN additions */
+.fun-panel{margin:12px 0;padding:14px;border-radius:20px;background:linear-gradient(135deg,#fff8e8,#fff0f4);border:2px solid #f3d9c9}
+.charge-title{font-weight:900;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.charge-track{height:16px;background:#f2e7df;border-radius:999px;overflow:hidden;margin-top:8px;border:1px solid #e8d7cc}
+.charge-fill{height:100%;width:0;background:linear-gradient(90deg,#ffd75a,#ff9d6c);transition:width .35s ease}
+.reward-card{margin-top:10px;text-align:center;font-weight:800;font-size:13px}
+.badge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+.badge{padding:10px 8px;border-radius:15px;background:#fff;border:1px solid #eadfd8;text-align:center;font-size:12px;font-weight:800}
+.badge.locked{opacity:.35;filter:grayscale(1)}
+.badge .bico{font-size:24px;display:block;margin-bottom:3px}
+.bonus-card{display:none;margin:14px 0;padding:15px;border-radius:20px;background:#fff6cf;border:2px dashed #efbd47;text-align:center}
+.bonus-card.show{display:block}
+.bonus-card button{margin-top:9px}
+.graduate-overlay{position:fixed;inset:0;background:rgba(65,48,44,.32);z-index:9999;display:none;place-items:center;padding:24px}
+.graduate-overlay.show{display:grid}
+.graduate-box{width:min(360px,94vw);background:#fffaf4;border-radius:28px;padding:24px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.18);animation:pop .42s ease}
+.graduate-box img{width:145px;max-height:145px;object-fit:contain}
+.graduate-title{font-size:28px;font-weight:1000;margin:6px 0;color:#e16f7d}
+.graduate-confetti{font-size:26px;letter-spacing:8px}
+@keyframes pop{0%{transform:scale(.72);opacity:0}70%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+.rare-event{margin:8px 0 12px;padding:9px 12px;border-radius:16px;background:#fff4c9;border:1px dashed #e6b94c;font-size:13px;font-weight:800;text-align:center}
+.calendar-rank{font-size:12px;font-weight:900;margin-top:8px;text-align:center}
+.stamp.level2 .paw-stamp{border-color:#e2ad3d;background:#fff8d7;box-shadow:0 0 0 3px rgba(245,200,80,.12)}
+.stamp.level2 .paw-pad,.stamp.level2 .paw-toe{background:#e2ad3d}
+.stamp.level3 .paw-stamp{border-color:#c78d32;background:#fff2b8;box-shadow:0 0 0 4px rgba(224,171,63,.16)}
+.stamp.level3 .paw-pad,.stamp.level3 .paw-toe{background:#c78d32}
+.stamp.level3:after{content:'♛';position:absolute;top:-6px;right:3px;font-size:14px;color:#c78d32;transform:rotate(8deg)}
+
 </style>
 </head>
 <body>
@@ -62,7 +91,14 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
         <div id="chargeNote" class="charge-note">あと5問でチャージ完了！</div>
       </div>
       <div style="display:flex;align-items:flex-end;gap:4px"><div id="homeBubble" class="bubble">今日も<br>ちょこっといく？</div><div class="mascot" aria-label="デンキチ"><img id="homeDenkichi" src="images/denkichi_home.png" alt="デンキチ"></div></div></div></div><div class="menu">
-    <button class="menu-btn daily" onclick="startDaily()"><div class="menu-icon">✏️</div><div class="menu-copy"><div class="menu-title">今日の5問</div><div class="menu-desc">5問できたら、今日のカレンダーに満タンスタンプ！</div></div><div class="arrow">›</div></button>
+    
+<div class="fun-panel">
+  <div class="charge-title"><span>⚡ デンキチ CHARGE</span><span id="chargeLabel">0 / 5</span></div>
+  <div class="charge-track"><div id="chargeFill" class="charge-fill"></div></div>
+  <div id="chargeMessage" class="reward-card">今日も少しずつチャージしよう！</div>
+</div>
+<div id="rareHomeEvent"></div>
+<button class="menu-btn daily" onclick="startDaily()"><div class="menu-icon">✏️</div><div class="menu-copy"><div class="menu-title">今日の5問</div><div class="menu-desc">5問できたら、今日のカレンダーに満タンスタンプ！</div></div><div class="arrow">›</div></button>
     <button class="menu-btn genre" onclick="showGenres()"><div class="menu-icon">📖</div><div class="menu-copy"><div class="menu-title">ジャンル別チャレンジ</div><div class="menu-desc">好きなジャンルから10問。気分で選べます</div></div><div class="arrow">›</div></button>
     <button class="menu-btn weak" onclick="showWeakList()"><div class="menu-icon">📝</div><div class="menu-copy"><div class="menu-title">苦手漢字リスト</div><div class="menu-desc">惜しかった・書けなかった漢字を一覧で確認</div></div><div class="arrow">›</div></button><button class="menu-btn endless" onclick="startEndless()"><div class="menu-icon">♾️</div><div class="menu-copy"><div class="menu-title">エンドレスモード</div><div class="menu-desc">終了するまで、好きなだけチャージ</div></div><div class="arrow">›</div></button>
   </div>
@@ -102,7 +138,12 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
     <div id="resultTitle" class="result-title">チャージ完了！</div><div class="result-score"><span id="resultGood">0</span>/<span id="resultTotal">0</span></div><div id="resultNote" class="result-note"></div>
     <div class="result-actions"><button class="btn primary" onclick="goHome()">トップへ戻る</button><button class="btn" onclick="retryLast()">同じ問題でもう一度</button></div>
   </div>
-</section>
+<div id="bonusCard" class="bonus-card">
+    <b>⚡ デンキチからボーナス問題！</b><br>
+    <span>もう1問いく？ 特別チャージだぞ。</span><br>
+    <button class="primary-btn" onclick="startBonus()">ボーナス問題に挑戦！</button>
+  </div>
+  </section>
 
 <section id="calendar" class="screen">
   <div class="topbar"><div></div><div class="screen-title">チャージカレンダー</div><div></div></div>
@@ -134,6 +175,8 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
     <div class="card stat"><div id="statDays" class="stat-num">0</div><div class="stat-label">学習した日数</div></div>
     <div class="card stat"><div id="statWeak" class="stat-num">0</div><div class="stat-label">苦手漢字</div></div>
   </div>
+  <div class="section-title" style="margin-top:16px">🏆 デンキチ称号</div>
+  <div id="badgeGrid" class="badge-grid"></div>
   <div style="height:12px"></div>
   <button class="btn" style="width:100%" onclick="resetStats()">記録をリセット</button>
 </section>
@@ -168,6 +211,16 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
     <h3>📊 記録</h3>
     <p>下のメニューで<b>カレンダーの右隣にある「記録」</b>を押すと、これまでの回答数、「書けた」率、学習した日数、苦手漢字の数を確認できます。</p>
 
+    <h3>⚡ チャージ＆ごほうび</h3>
+    <p>問題を解くとデンキチのチャージがたまります。5問でフルチャージ！続けて取り組むと、ごほうびデンキチが登場します。</p>
+    <h3>🏆 称号</h3>
+    <p>回答数、連続日数、苦手漢字の卒業数などで称号が増えていきます。「記録」画面で集めた称号を確認できます。</p>
+    <h3>🎁 ボーナス問題</h3>
+    <p>5問終わると、デンキチからもう1問だけボーナス問題が届くことがあります。やるかどうかは自由です。</p>
+    <h3>🎓 苦手漢字の卒業</h3>
+    <p>苦手復習で書けるようになった漢字をリストから外すと、デンキチがお祝いします。</p>
+    <h3>🐾 肉球スタンプ</h3>
+    <p>5問以上取り組んだ日はカレンダーに肉球スタンプ。たくさん取り組んだ日は、ちょっと特別なスタンプになります。</p>
     <div class="quote">漢字力、毎日ちょっとずつ。<br>忘れても、またチャージすればいい。 🐾</div>
   </div>
 </section>
@@ -216,9 +269,10 @@ const genreDefs=[
  {key:'money',icon:'🛍️',name:'買い物・お金',sub:'買い物・支払い・お金',cats:['買い物','お金']},
  {key:'random',icon:'🔀',name:'ランダム',sub:'全部のジャンルから',cats:[]}
 ];
-function defaultState(){return {total:0,good:0,close:0,bad:0,weak:{},weakMeta:{},days:{},lastStudyDate:'',streak:0};}
+function defaultState(){return {total:0,good:0,close:0,bad:0,weak:{},weakMeta:{},graduated:0,bonusDone:{},days:{},lastStudyDate:'',streak:0};}
 function loadState(){try{return {...defaultState(),...(JSON.parse(localStorage.getItem(STORAGE_KEY))||{})};}catch(e){return defaultState();}}
-let state=loadState();if(!state.weakMeta)state.weakMeta={}; function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}function weakMeta(id){if(!state.weakMeta[id])state.weakMeta[id]={close:0,bad:0};return state.weakMeta[id];}
+let state=loadState();if(!state.weakMeta)state.weakMeta={}; state.graduated=state.graduated||0;state.bonusDone=state.bonusDone||{};
+function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}function weakMeta(id){if(!state.weakMeta[id])state.weakMeta[id]={close:0,bad:0};return state.weakMeta[id];}
 function parseCSV(text){const rows=[];let row=[],cell='',q=false;for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(c==='"'){if(q&&n==='"'){cell+='"';i++;}else q=!q;}else if(c===','&&!q){row.push(cell);cell='';}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&n==='\n')i++;row.push(cell);cell='';if(row.some(v=>v.trim()!==''))rows.push(row);row=[];}else cell+=c;}row.push(cell);if(row.some(v=>v.trim()!==''))rows.push(row);if(rows.length<2)return[];const h=rows[0].map(x=>x.trim().replace(/^\uFEFF/,''));return rows.slice(1).map(r=>Object.fromEntries(h.map((k,i)=>[k,(r[i]??'').trim()]))).filter(x=>x.id&&x.reading&&x.answer);}
 async function loadWords(){try{const r=await fetch(CSV_FILE+'?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;words=parseCSV(await r.text());if(!words.length)throw 0;}catch(e){words=fallbackWords;const n=document.getElementById('loadNotice');n.classList.add('show');n.innerHTML='プレビュー用のサンプル問題で表示しています。GitHub Pagesでは <b>index.html と kanji.csv を同じ場所</b>に置くとCSVを読み込みます。';}refreshHome();renderGenres();}
 
@@ -278,6 +332,70 @@ function denkichiSay(kind){
  const a=DENKICHI_TALK[kind]||DENKICHI_TALK.think;
  return a[Math.floor(Math.random()*a.length)];
 }
+
+const FUN_REWARDS=[
+ ['denkichi_mikan.png','みかん休憩デンキチ 🍊'],
+ ['denkichi_box.png','箱入りデンキチ 📦'],
+ ['denkichi_sleep.png','すやすやデンキチ 💤'],
+ ['denkichi_crown.png','王さまデンキチ 👑'],
+ ['denkichi_peek.png','こっそりデンキチ 👀'],
+ ['denkichi_thanks.png','ありがとうデンキチ 💕']
+];
+const TITLES=[
+ {icon:'🌱',name:'はじめの一歩',ok:()=>state.total>=1},
+ {icon:'⚡',name:'漢字チャージャー',ok:()=>state.total>=100},
+ {icon:'🐾',name:'三日坊主回避',ok:()=>state.streak>=3},
+ {icon:'🔥',name:'7日連続チャージ',ok:()=>state.streak>=7},
+ {icon:'👑',name:'30日チャージ王',ok:()=>state.streak>=30},
+ {icon:'🎓',name:'苦手ハンター',ok:()=>state.graduated>=10},
+ {icon:'💯',name:'500問マスター',ok:()=>state.total>=500},
+ {icon:'✨',name:'漢字力フル充電',ok:()=>state.total>=1000}
+];
+function todayCount(){return state.days&&state.days[todayKey()]||0}
+function updateFunHome(){
+ const n=todayCount(), step=n%5, full=n>=5;
+ const fill=document.getElementById('chargeFill'),lab=document.getElementById('chargeLabel'),msg=document.getElementById('chargeMessage');
+ if(fill)fill.style.width=(full?100:step*20)+'%';
+ if(lab)lab.textContent=full?'FULL!':step+' / 5';
+ if(msg){
+   if(!n)msg.textContent='今日も少しずつチャージしよう！';
+   else if(n<5)msg.textContent=`あと${5-n}問でフルチャージ！`;
+   else{
+     const r=FUN_REWARDS[Math.floor((n/5-1))%FUN_REWARDS.length];
+     msg.innerHTML=`🎁 今日のごほうび：${r[1]}`;
+   }
+ }
+ const rare=document.getElementById('rareHomeEvent');
+ if(rare){
+   const dayNum=parseInt(todayKey().replace(/-/g,''),10);
+   if(dayNum%7===0) rare.innerHTML='<div class="rare-event">📦 箱からデンキチがのぞいている…<br>「今日は5問やるまで出ないぞ」</div>';
+   else if(dayNum%11===0) rare.innerHTML='<div class="rare-event">💤 デンキチは寝ている…<br>「問題が始まったら起こして…」</div>';
+   else if(dayNum%13===0) rare.innerHTML='<div class="rare-event">🍊 今日はみかんの日らしい。<br>「一問やったら一房な」</div>';
+   else rare.innerHTML='';
+ }
+}
+function renderBadges(){
+ const g=document.getElementById('badgeGrid');if(!g)return;
+ g.innerHTML=TITLES.map(x=>`<div class="badge ${x.ok()?'':'locked'}"><span class="bico">${x.icon}</span>${x.name}<br><small>${x.ok()?'GET!':'？？？'}</small></div>`).join('');
+}
+function maybeBonus(){
+ const b=document.getElementById('bonusCard');if(!b)return;
+ const key=todayKey();
+ const eligible=session.good+session.close+session.bad>=5 && !state.bonusDone[key] && words.length;
+ b.classList.toggle('show',!!eligible);
+}
+function startBonus(){
+ state.bonusDone[todayKey()]=true;saveState();
+ currentMode='ボーナス問題';isWeakMode=false;isEndlessMode=false;
+ beginQuiz(shuffle(words).slice(0,1));
+}
+function showGraduate(word){
+ state.graduated=(state.graduated||0)+1;saveState();
+ const o=document.getElementById('graduateOverlay'),w=document.getElementById('graduateWord');
+ if(w)w.textContent=word||'';
+ if(o)o.classList.add('show');
+}
+function closeGraduate(){const o=document.getElementById('graduateOverlay');if(o)o.classList.remove('show')}
 function updateHomeDenkichi(){
   const done=state.days[todayKey()]||0;
   let pic='denkichi_home.png';
@@ -297,7 +415,7 @@ function hashString(s){let h=2166136261;for(const ch of s){h^=ch.charCodeAt(0);h
 function seededDaily(list,count){const a=[...list];let seed=hashString(todayKey());function rnd(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a.slice(0,Math.min(count,a.length));}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));window.scrollTo({top:0,behavior:'smooth'});}
 function monthFullCount(date=new Date()){const y=date.getFullYear(),m=date.getMonth()+1,p=`${y}-${String(m).padStart(2,'0')}-`;return Object.entries(state.days||{}).filter(([k,v])=>k.startsWith(p)&&v>=FULL_CHARGE).length;}
-function refreshHome(){const done=state.days[todayKey()]||0,pct=Math.min(100,Math.round(done/FULL_CHARGE*100));document.getElementById('batteryFill').style.width=pct+'%';document.getElementById('chargePct').textContent=pct+'%';document.getElementById('chargeNote').textContent=done>=FULL_CHARGE?'チャージ完了！ 今日のスタンプGET 🐾':`あと${FULL_CHARGE-done}問でチャージ完了！`;document.getElementById('monthFullHome').textContent=monthFullCount()+'日';document.getElementById('streakHome').textContent=(state.streak||0)+'日';updateHomeDenkichi();}
+function refreshHome(){const done=state.days[todayKey()]||0,pct=Math.min(100,Math.round(done/FULL_CHARGE*100));document.getElementById('batteryFill').style.width=pct+'%';document.getElementById('chargePct').textContent=pct+'%';document.getElementById('chargeNote').textContent=done>=FULL_CHARGE?'チャージ完了！ 今日のスタンプGET 🐾':`あと${FULL_CHARGE-done}問でチャージ完了！`;document.getElementById('monthFullHome').textContent=monthFullCount()+'日';document.getElementById('streakHome').textContent=(state.streak||0)+'日';updateHomeDenkichi();;updateFunHome()}
 function goHome(){refreshHome();showScreen('home');}
 function startDaily(){if(!words.length)return;currentMode='今日の5問';isWeakMode=false;isEndlessMode=false;beginQuiz(seededDaily(words,5));}
 function showGenres(){renderGenres();showScreen('genres');}
@@ -379,7 +497,7 @@ function judge(type,btn){
  n.textContent=(!isEndlessMode&&qIndex===quizWords.length-1)?'結果を見る →':'次の問題へ →';
  n.classList.add('show');
 }
-function setWeakRemoval(remove){const w=quizWords[qIndex];if(remove){delete state.weak[w.id];delete state.weakMeta[w.id];}saveState();document.getElementById('weakAction').innerHTML='<b>'+(remove?'✓ 苦手リストから外します':'このまま苦手リストに残します')+'</b>';}
+function setWeakRemoval(remove){const w=quizWords[qIndex];if(remove){delete state.weak[w.id];delete state.weakMeta[w.id];showGraduate(w.answer);}saveState();document.getElementById('weakAction').innerHTML='<b>'+(remove?'✓ 苦手リストから外します':'このまま苦手リストに残します')+'</b>';}
 function nextQuestion(){if(!currentJudged)return;if(isEndlessMode){qIndex++;if(qIndex>=quizWords.length)quizWords=quizWords.concat(shuffle(words));renderQuestion();return;}qIndex++;if(qIndex>=quizWords.length)finishQuiz();else renderQuestion();}
 function finishEndless(){if(session.good+session.close+session.bad===0)return goHome();finishQuiz();}
 function updateStreak(t){if(state.lastStudyDate===t)return;const d=new Date();d.setHours(0,0,0,0);const y=new Date(d);y.setDate(d.getDate()-1);state.streak=(state.lastStudyDate===todayKey(y))?(state.streak||0)+1:1;state.lastStudyDate=t;}
@@ -398,12 +516,12 @@ function finishQuiz(){
  else if(rate>=.7) pic='denkichi_correct.png';
  else if(rate>=.4) pic='denkichi_close.png';
  setDenkichi('resultDenkichi',pic);
- showScreen('result');refreshHome();
+ showScreen('result');maybeBonus();refreshHome();
 }
 function retryLast(){if(lastQuizWords.length)beginQuiz(lastQuizWords)}function quitQuiz(){if(confirm('このチャレンジを終了しますか？'))goHome();}
 function showCalendar(){calendarCursor=new Date();renderCalendar();showScreen('calendar');}
 function changeMonth(n){calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+n,1);renderCalendar();}
-function renderCalendar(){const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth();const mdays=monthFullCount(calendarCursor);const calPic=mdays>=30?'denkichi_30days.png':(state.streak>=7?'denkichi_7days.png':'denkichi_peek.png');setDenkichi('calendarDenkichi',calPic);document.getElementById('calMonth').textContent=`${y}年 ${m+1}月`;document.getElementById('calFullCount').textContent=`満タン ${mdays}日`;document.getElementById('calStreak').textContent=`🔥 ${state.streak||0}日連続`;const box=document.getElementById('calendarGrid');box.innerHTML='';const first=new Date(y,m,1),start=new Date(y,m,1-first.getDay());for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const key=todayKey(d),count=state.days[key]||0,isMonth=d.getMonth()===m,isToday=key===todayKey(),full=count>=FULL_CHARGE;const el=document.createElement('div');el.className='day'+(isMonth?'':' out')+(isToday?' today':'')+(full?' full':'');el.innerHTML=`<div class="day-num">${d.getDate()}</div>${full?'<div class="stamp"><div class="paw-stamp"><div class="paw-print"><i class="paw-toe t1"></i><i class="paw-toe t2"></i><i class="paw-toe t3"></i><i class="paw-toe t4"></i><i class="paw-pad"></i></div></div></div>':''}${count?`<div class="day-count">${Math.min(count,FULL_CHARGE)}/${FULL_CHARGE}</div>`:''}`;box.appendChild(el);}}
+function renderCalendar(){const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth();const mdays=monthFullCount(calendarCursor);const calPic=mdays>=30?'denkichi_30days.png':(state.streak>=7?'denkichi_7days.png':'denkichi_peek.png');setDenkichi('calendarDenkichi',calPic);document.getElementById('calMonth').textContent=`${y}年 ${m+1}月`;document.getElementById('calFullCount').textContent=`満タン ${mdays}日`;document.getElementById('calStreak').textContent=`🔥 ${state.streak||0}日連続`;const box=document.getElementById('calendarGrid');box.innerHTML='';const first=new Date(y,m,1),start=new Date(y,m,1-first.getDay());for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const key=todayKey(d),count=state.days[key]||0,isMonth=d.getMonth()===m,isToday=key===todayKey(),full=count>=FULL_CHARGE;const el=document.createElement('div');el.className='day'+(isMonth?'':' out')+(isToday?' today':'')+(full?' full':'');el.innerHTML=`<div class="day-num">${d.getDate()}</div>${full?`<div class="stamp ${count>=20?'level3':count>=10?'level2':''}"><div class="paw-stamp"><div class="paw-print"><i class="paw-toe t1"></i><i class="paw-toe t2"></i><i class="paw-toe t3"></i><i class="paw-toe t4"></i><i class="paw-pad"></i></div></div></div>`:''}${count?`<div class="day-count">${Math.min(count,FULL_CHARGE)}/${FULL_CHARGE}</div>`:''}`;box.appendChild(el);}}
 function showWeakList(){
  const weak=words.filter(w=>(state.weak[w.id]||0)>0).sort((a,b)=>(state.weak[b.id]||0)-(state.weak[a.id]||0));
  const practiceBtn=document.getElementById('weakPracticeBtn');
@@ -437,12 +555,22 @@ function showStats(){
    statWeak:weak.length
  };
  Object.entries(vals).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.textContent=val;});
- showScreen('stats');
+ renderBadges();showScreen('stats');
 }
 function showAbout(){showScreen('about')}
 function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function resetStats(){if(confirm('成績・苦手・カレンダーの記録をすべてリセットしますか？')){state=defaultState();saveState();refreshHome();showStats();}}
 loadWords();
 </script>
+<div id="graduateOverlay" class="graduate-overlay" onclick="closeGraduate()">
+  <div class="graduate-box" onclick="event.stopPropagation()">
+    <div class="graduate-confetti">🎉 ✨ 🎊</div>
+    <img src="images/denkichi_crown.png" onerror="this.src='images/denkichi_correct.png'" alt="お祝いデンキチ">
+    <div class="graduate-title">苦手漢字 卒業！</div>
+    <div id="graduateWord" style="font-size:34px;font-weight:1000"></div>
+    <p>よく覚えた！<br>デンキチ認定、卒業です。</p>
+    <button class="primary-btn" onclick="closeGraduate()">やったー！</button>
+  </div>
+</div>
 </body>
 </html>
