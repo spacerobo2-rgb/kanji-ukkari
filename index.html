@@ -6,6 +6,9 @@
 <meta name="theme-color" content="#fff8eb">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="KANJI CH⚡RGE">
 <title>KANJI CHARGE</title>
 <style>
 :root{
@@ -40,7 +43,13 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
 .paw-toe{position:absolute;width:6px;height:7px;background:#e98291;border-radius:50%}
 .paw-toe.t1{left:1px;top:6px;transform:rotate(-25deg)}.paw-toe.t2{left:6px;top:1px}.paw-toe.t3{right:5px;top:1px}.paw-toe.t4{right:0;top:6px;transform:rotate(25deg)}
 .day.full .paw-stamp{animation:pawBounce .5s ease}@keyframes pawBounce{0%{transform:scale(.55) rotate(-8deg);opacity:.2}70%{transform:scale(1.12) rotate(3deg)}100%{transform:scale(1) rotate(0)}}.day-num{position:relative;z-index:2}.day-count{position:absolute;right:4px;bottom:3px;font-size:8px;color:#8b7d76;z-index:2}.cal-legend{margin-top:12px;font-size:11px;color:#7f716a;line-height:1.7;background:#fff8e7;border-radius:13px;padding:9px 11px}
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.stat{padding:15px}.stat-num{font-size:29px;font-weight:950;color:#df596b}.stat-label{font-size:10.5px;color:var(--muted);margin-top:3px}.weak-list{display:grid;gap:8px}.weak-item{padding:12px 14px;display:flex;align-items:center;justify-content:space-between}.weak-word{font-size:17px;font-weight:950}.weak-read{font-size:11px;color:var(--muted);margin-top:2px}.weak-level{font-size:10px;font-weight:900;color:#b45360;background:#fff0f2;border-radius:999px;padding:5px 8px}.empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7}.notice{display:none;background:#fff7dc;border:1px solid #edd792;color:#6d5c3b;border-radius:13px;padding:9px 11px;font-size:11px;line-height:1.55;margin-bottom:10px}.notice.show{display:block}.about{padding:18px;line-height:1.8;font-size:13px}.about h3{margin:5px 0 9px;font-size:17px}.about .quote{background:#fff2c6;border-radius:14px;padding:12px 13px;font-weight:800;margin-top:12px}.hide{display:none!important}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.stat{padding:15px}.stat-num{font-size:29px;font-weight:950;color:#df596b}.stat-label{font-size:10.5px;color:var(--muted);margin-top:3px}.weak-list{display:grid;gap:8px}.weak-item{padding:12px 14px;display:flex;align-items:center;justify-content:space-between}.weak-word{font-size:17px;font-weight:950}.weak-read{font-size:11px;color:var(--muted);margin-top:2px}.weak-level{font-size:10px;font-weight:900;color:#b45360;background:#fff0f2;border-radius:999px;padding:5px 8px}.empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7}.notice{display:none;background:#fff7dc;border:1px solid #edd792;color:#6d5c3b;border-radius:13px;padding:9px 11px;font-size:11px;line-height:1.55;margin-bottom:10px}.notice.show{display:block}.about{padding:18px;line-height:1.8;font-size:13px}.about h3{margin:5px 0 9px;font-size:17px}.about .quote{background:#fff2c6;border-radius:14px;padding:12px 13px;font-weight:800;margin-top:12px}
+.denkichi-profile{margin-top:26px;padding:18px 16px;background:linear-gradient(145deg,#fffaf0,#f2f8ef);border:1.5px dashed #c9b58f;border-radius:20px}
+.denkichi-profile h3{font-size:19px;margin:0 0 5px}.denkichi-profile .sub{font-size:10px;color:#9a8b80;font-weight:800;letter-spacing:.06em;margin-bottom:14px}
+.denkichi-profile h4{font-size:14px;margin:18px 0 6px;color:#4e6f55}.denkichi-profile p{margin:0 0 10px}
+.profile-data{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;background:#fffdf8;border-radius:14px;padding:12px;margin:12px 0;font-size:11px}
+.profile-data b{color:#887269}.profile-small{font-size:10px;color:#91847c;line-height:1.75}
+.profile-final{margin-top:16px;padding:12px;background:#edf7ec;border-radius:14px;font-weight:850;text-align:center;line-height:1.7}.hide{display:none!important}
 @media(max-width:380px){.brand{font-size:27px}.reading{font-size:34px}.mascot{width:104px;min-width:104px}.menu-title{font-size:15px}.genre-name{font-size:14px}}
 
 /* v7 FUN additions */
@@ -238,6 +247,65 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
     <h3>🐾 肉球スタンプ</h3>
     <p>5問以上取り組んだ日はカレンダーに肉球スタンプ。たくさん取り組んだ日は、ちょっと特別なスタンプになります。</p>
     <div class="quote">漢字力、毎日ちょっとずつ。<br>忘れても、またチャージすればいい。 🐾</div>
+
+    <div class="denkichi-profile">
+      <h3>🐱 デンキチ公式プロフィール</h3>
+      <div class="sub">※ここから先は、使い方とはほぼ関係ありません。</div>
+
+      <p>本名、<b>電吉（でんきち）</b>。KANJI CHARGEの充電係兼、漢字を思い出せない人の横で「出てこないねぇ」と一緒に困る係。</p>
+
+      <div class="profile-data">
+        <b>名前</b><span>電吉（でんきち）</span>
+        <b>種類</b><span>たぶん猫。本人も深く考えていない。</span>
+        <b>年齢</b><span>非公開。「猫に年齢を聞くな」が口癖。</span>
+        <b>出身</b><span>とある町の、充電ケーブルが妙に絡まりやすい家。</span>
+        <b>職業</b><span>KANJI CHARGE専属・漢字充電士（自称）</span>
+        <b>好物</b><span>みかん、昼寝、誰かが「書けた！」と言った瞬間。</span>
+        <b>苦手</b><span>掃除機、月曜日、薔薇を漢字で書けと言われること。</span>
+        <b>座右の銘</b><span>「読めるなら、だいたい友達。」</span>
+      </div>
+
+      <h4>― 波乱の幼少期 ―</h4>
+      <p>幼いころのデンキチは、漢字とは無縁の生活を送っていた。文字よりも段ボール、勉強よりも昼寝。将来の夢は「日当たりのいい場所で特に何もしないこと」だった。</p>
+      <p>ところがある日、床に落ちていた一枚のメモを発見する。そこには大きく<b>「鰹」</b>と書かれていた。読めない。だが、なぜか猛烈においしそうな気配だけはする。デンキチは三日三晩その紙を見つめた。途中、普通に寝た。</p>
+      <p>四日目、それが「かつお」だと知った瞬間、彼の中に電流が走ったという。実際には近くでスマホの充電ケーブルを踏んだだけという説もある。</p>
+
+      <h4>― 修業時代 ―</h4>
+      <p>「漢字が書ければ、世界はもっとおいしくなる」。そう信じたデンキチは修業の旅に出た。スーパーでは<b>「半額」</b>を学び、病院では<b>「診察券」</b>を学び、役所では<b>「続柄」</b>の前で静かに心が折れた。</p>
+      <p>特に「続柄」事件は有名である。読み方が分からず窓口の前で約17分固まり、最終的に「今日はそういう日じゃない」と判断して帰宅。以来、無理をしないことも立派な知性だと考えるようになった。</p>
+
+      <h4>― 挫折、そして充電 ―</h4>
+      <p>修業を続けるうち、デンキチは重大な事実に気づく。<b>読める漢字が、ぜんぜん書けない。</b></p>
+      <p>「雰囲気」は途中から何を書いているのか分からなくなり、「挨拶」は二文字目あたりで遠い目になった。「醤油」に至っては、最初からひらがなで生きていく決意を固めかけた。</p>
+      <p>しかしその夜、残り3％になったスマホを充電しているとき、デンキチは思った。</p>
+      <p><b>「スマホだって毎日充電する。漢字だって、忘れたらまた充電すればいいのでは？」</b></p>
+      <p>こうしてKANJI CHARGEの原型が生まれた。なお、この歴史的ひらめきの直後、デンキチ本人は充電器を挿したまま寝落ちした。</p>
+
+      <h4>― デンキチの信念 ―</h4>
+      <p>デンキチは「全部書ける人が偉い」とは考えていない。書けたらうれしい。惜しかったら次がある。書けなかったら、また会えばいい。そして<b>「これは書けなくてOK」</b>と思った漢字は、堂々と手放していい。</p>
+      <p>なぜならデンキチ自身、「檸檬」は一度覚えたが、翌朝きれいに忘れたからである。本人いわく「レモンはレモンで十分うまい」。説得力だけはある。</p>
+
+      <h4>― 現在 ―</h4>
+      <p>現在はKANJI CHARGEの案内役として勤務。主な業務は、鉛筆を持つ、応援する、たまに箱に入る、みかんを食べる、そして利用者より先に疲れること。</p>
+      <p>5問終わると妙に誇らしげな顔をするが、問題を解いたのはデンキチではない。ごほうびデンキチとして登場することもあるが、本人は「働いたからごほうびをもらった」と思っている節がある。</p>
+
+      <h4>― どうでもいい極秘情報 ―</h4>
+      <p>緑の鉛筆は「相棒」と呼んでいるが、名前はまだない。PCは使えるが、パスワードを忘れがち。箱を見ると入る。狭い箱ほど燃える。カレンダーの肉球スタンプには毎回かなり力を込めている。</p>
+      <p>また、難しい漢字が出ると一瞬だけ画面の外を見る癖がある。逃げ道を確認しているらしい。</p>
+
+      <div class="profile-final">
+        デンキチからひとこと<br>
+        「漢字は逃げない。<br>
+        でも今日は5問でいい。」<br>🐾⚡
+      </div>
+
+      <div class="profile-small" style="margin-top:12px">
+        ※デンキチの経歴には本人の証言が多く含まれています。<br>
+        ※「鰹事件」「続柄事件」について第三者の証言は得られていません。<br>
+        ※漢字充電士という資格は、たぶん存在しません。
+      </div>
+    </div>
+
   </div>
 </section>
 </main>
