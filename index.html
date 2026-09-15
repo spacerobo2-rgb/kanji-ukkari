@@ -58,7 +58,7 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
       <div class="mascot" aria-label="デンキチ"><img id="homeDenkichi" src="images/denkichi_home.png" alt="デンキチ"></div></div></div><div class="menu">
     <button class="menu-btn daily" onclick="startDaily()"><div class="menu-icon">✏️</div><div class="menu-copy"><div class="menu-title">今日の5問</div><div class="menu-desc">5問できたら、今日のカレンダーに満タンスタンプ！</div></div><div class="arrow">›</div></button>
     <button class="menu-btn genre" onclick="showGenres()"><div class="menu-icon">📖</div><div class="menu-copy"><div class="menu-title">ジャンル別チャレンジ</div><div class="menu-desc">好きなジャンルから10問。気分で選べます</div></div><div class="arrow">›</div></button>
-    <button class="menu-btn weak" onclick="showStats()"><div class="menu-icon">📝</div><div class="menu-copy"><div class="menu-title">苦手漢字リスト</div><div class="menu-desc">惜しかった・書けなかった漢字を一覧で確認</div></div><div class="arrow">›</div></button><button class="menu-btn endless" onclick="startEndless()"><div class="menu-icon">♾️</div><div class="menu-copy"><div class="menu-title">エンドレスモード</div><div class="menu-desc">終了するまで、好きなだけチャージ</div></div><div class="arrow">›</div></button>
+    <button class="menu-btn weak" onclick="showWeakList()"><div class="menu-icon">📝</div><div class="menu-copy"><div class="menu-title">苦手漢字リスト</div><div class="menu-desc">惜しかった・書けなかった漢字を一覧で確認</div></div><div class="arrow">›</div></button><button class="menu-btn endless" onclick="startEndless()"><div class="menu-icon">♾️</div><div class="menu-copy"><div class="menu-title">エンドレスモード</div><div class="menu-desc">終了するまで、好きなだけチャージ</div></div><div class="arrow">›</div></button>
   </div>
   <div class="section-title">今月のチャージ</div>
   <div class="mini-row">
@@ -111,28 +111,69 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
   </div>
 </section>
 
-<section id="stats" class="screen">
-  <div style="display:flex;justify-content:center;margin:2px 0 8px">
-    <div class="mascot small"><img id="statsDenkichi" src="images/denkichi_books.png" alt="記録を見るデンキチ"></div>
-  </div>
-  <div class="topbar"><div></div><div class="screen-title">苦手漢字</div><div></div></div>
+<section id="weaklist" class="screen">
+<div class="topbar"><div></div><div class="screen-title">苦手漢字リスト</div><div></div></div>
   <div class="stat-grid"><div class="card stat"><div id="statAnswered" class="stat-num">0</div><div class="stat-label">これまでの回答数</div></div><div class="card stat"><div id="statRate" class="stat-num">0%</div><div class="stat-label">「書けた」率</div></div><div class="card stat"><div id="statDays" class="stat-num">0</div><div class="stat-label">学習した日数</div></div><div class="card stat"><div id="statWeak" class="stat-num">0</div><div class="stat-label">苦手漢字</div></div></div>
   <div class="section-title">苦手漢字リスト</div>
   <button id="weakPracticeBtn" class="primary-btn" style="margin:0 0 12px" onclick="startWeak()">苦手漢字から5問復習する →</button>
-  <div id="weakList" class="weak-list"></div><div style="height:10px"></div><button class="btn" style="width:100%" onclick="resetStats()">記録をリセット</button>
+  <div id="weakList" class="weak-list"></div>
+</section>
+
+<section id="stats" class="screen">
+  <div class="topbar"><div></div><div class="screen-title">記録</div><div></div></div>
+  <div style="display:flex;justify-content:center;margin:2px 0 8px">
+    <div class="mascot small"><img id="statsDenkichi" src="images/denkichi_books.png" alt="記録を見るデンキチ"></div>
+  </div>
+  <div class="stat-grid">
+    <div class="card stat"><div id="statAnswered" class="stat-num">0</div><div class="stat-label">これまでの回答数</div></div>
+    <div class="card stat"><div id="statRate" class="stat-num">0%</div><div class="stat-label">「書けた」率</div></div>
+    <div class="card stat"><div id="statDays" class="stat-num">0</div><div class="stat-label">学習した日数</div></div>
+    <div class="card stat"><div id="statWeak" class="stat-num">0</div><div class="stat-label">苦手漢字</div></div>
+  </div>
+  <div style="height:12px"></div>
+  <button class="btn" style="width:100%" onclick="resetStats()">記録をリセット</button>
 </section>
 
 <section id="about" class="screen">
+  <div class="topbar"><div></div><div class="screen-title">使い方</div><div></div></div>
   <div style="display:flex;justify-content:center;margin:2px 0 8px">
     <div class="mascot small"><img src="images/denkichi_pc.png" alt="デンキチ"></div>
-  </div><div class="card about"><h3>デンキチと一緒に。</h3><p>読めるのに、いざ書こうとすると出てこない。そんな日常漢字を、1日5問から気軽にチャージするアプリです。</p><div class="quote">書けるようになると、ちょっと嬉しい。<br>その積み重ねが、きっと大きな力に。</div></div></section>
+  </div>
+  <div class="card about">
+    <h3>KANJI CHARGE の使い方</h3>
+    <p><b>読めるのに、書こうとすると出てこない。</b><br>そんな日常漢字を、デンキチと一緒に少しずつ思い出すアプリです。</p>
+
+    <h3>✏️ 今日の5問</h3>
+    <p>毎日5問だけ挑戦します。読みと例文を見て、紙や頭の中で漢字を書いてみましょう。「答えを見る」を押したら、自分で<b>書けた！／惜しい／書けなかった</b>のどれかを選びます。判定後は「次の問題へ」を押すまで次へ進みません。</p>
+
+    <h3>📖 ジャンル別チャレンジ</h3>
+    <p>暮らし、食べ物、仕事、健康、交通など、好きなジャンルを選んで挑戦できます。</p>
+
+    <h3>📝 苦手漢字リスト</h3>
+    <p>「惜しい」「書けなかった」を選んだ漢字は、自動で苦手漢字リストに入ります。どちらで間違えたかも表示されます。リストの上にあるボタンから、苦手漢字を<b>5問ずつ復習</b>できます。</p>
+
+    <h3>🔁 苦手漢字の卒業</h3>
+    <p>苦手復習で「書けた！」を選ぶと、その漢字を<b>苦手リストから外す／まだ残す</b>を選べます。自信がついた漢字から少しずつ卒業させましょう。</p>
+
+    <h3>♾️ エンドレスモード</h3>
+    <p>問題数を決めず、好きなだけ続けられます。終わりたいときは画面上の「終了」を押します。</p>
+
+    <h3>🐾 カレンダー</h3>
+    <p>その日に5問以上取り組むと、カレンダーに満タンスタンプがつきます。毎日の小さなチャージを残していけます。</p>
+
+    <h3>📊 記録</h3>
+    <p>下のメニューで<b>カレンダーの右隣にある「記録」</b>を押すと、これまでの回答数、「書けた」率、学習した日数、苦手漢字の数を確認できます。</p>
+
+    <div class="quote">漢字力、毎日ちょっとずつ。<br>忘れても、またチャージすればいい。 🐾</div>
+  </div>
+</section>
 </main>
 </div>
 
 <nav class="bottom-nav"><div class="bottom-nav-inner">
 <button class="nav-btn active" data-screen="home" onclick="goHome()"><span class="ico">🏠</span><span>ホーム</span></button>
 <button class="nav-btn" data-screen="calendar" onclick="showCalendar()"><span class="ico">🐾</span><span>カレンダー</span></button>
-<button class="nav-btn" data-screen="stats" onclick="showStats()"><span class="ico">📝</span><span>苦手</span></button>
+<button class="nav-btn" data-screen="stats" onclick="showStats()"><span class="ico">📊</span><span>記録</span></button>
 <button class="nav-btn" data-screen="about" onclick="showAbout()"><span class="ico">❓</span><span>使い方</span></button>
 </div></nav>
 <script>
@@ -252,37 +293,36 @@ function retryLast(){if(lastQuizWords.length)beginQuiz(lastQuizWords)}function q
 function showCalendar(){calendarCursor=new Date();renderCalendar();showScreen('calendar');}
 function changeMonth(n){calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+n,1);renderCalendar();}
 function renderCalendar(){const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth();const mdays=monthFullCount(calendarCursor);const calPic=mdays>=30?'denkichi_30days.png':(state.streak>=7?'denkichi_7days.png':'denkichi_peek.png');setDenkichi('calendarDenkichi',calPic);document.getElementById('calMonth').textContent=`${y}年 ${m+1}月`;document.getElementById('calFullCount').textContent=`満タン ${mdays}日`;document.getElementById('calStreak').textContent=`🔥 ${state.streak||0}日連続`;const box=document.getElementById('calendarGrid');box.innerHTML='';const first=new Date(y,m,1),start=new Date(y,m,1-first.getDay());for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const key=todayKey(d),count=state.days[key]||0,isMonth=d.getMonth()===m,isToday=key===todayKey(),full=count>=FULL_CHARGE;const el=document.createElement('div');el.className='day'+(isMonth?'':' out')+(isToday?' today':'')+(full?' full':'');el.innerHTML=`<div class="day-num">${d.getDate()}</div>${full?'<div class="stamp">🐾</div>':''}${count?`<div class="day-count">${Math.min(count,FULL_CHARGE)}/${FULL_CHARGE}</div>`:''}`;box.appendChild(el);}}
-function showStats(){
- let sp='denkichi_books.png';
- if(state.streak>=30)sp='denkichi_30days.png';
- else if(state.streak>=7)sp='denkichi_7days.png';
- setDenkichi('statsDenkichi',sp);
-
- const weak=words.filter(w=>(state.weak[w.id]||0)>0)
-   .sort((a,b)=>(state.weak[b.id]||0)-(state.weak[a.id]||0));
+function showWeakList(){
+ const weak=words.filter(w=>(state.weak[w.id]||0)>0).sort((a,b)=>(state.weak[b.id]||0)-(state.weak[a.id]||0));
  const practiceBtn=document.getElementById('weakPracticeBtn');
  if(practiceBtn)practiceBtn.style.display=weak.length?'block':'none';
-
- const box=document.getElementById('weakList');
- box.innerHTML='';
+ const box=document.getElementById('weakList');box.innerHTML='';
  if(!weak.length){
    box.innerHTML='<div class="card empty">まだ苦手漢字はありません。<br>「惜しい」「書けなかった」を選ぶとここにたまります。</div>';
  }else{
    weak.forEach(w=>{
      const m=state.weakMeta[w.id]||{close:0,bad:0};
-     const d=document.createElement('div');
-     d.className='card weak-item';
-     d.innerHTML=`<div class="weak-info">
-       <div class="weak-word">${escapeHtml(w.answer)}</div>
-       <div class="weak-read">${escapeHtml(w.reading)}</div>
-       <div class="weak-reason">
-         ${m.close?`<span class="reason-close">△ 惜しい ${m.close}回</span>`:''}
-         ${m.bad?`<span class="reason-bad">× 書けなかった ${m.bad}回</span>`:''}
-       </div>
-     </div>`;
+     const d=document.createElement('div');d.className='card weak-item';
+     d.innerHTML=`<div class="weak-info"><div class="weak-word">${escapeHtml(w.answer)}</div><div class="weak-read">${escapeHtml(w.reading)}</div><div class="weak-reason">${m.close?`<span class="reason-close">△ 惜しい ${m.close}回</span>`:''}${m.bad?`<span class="reason-bad">× 書けなかった ${m.bad}回</span>`:''}</div></div>`;
      box.appendChild(d);
    });
  }
+ showScreen('weaklist');
+}
+function showStats(){
+ const rate=state.total?Math.round(state.good/state.total*100):0;
+ const weak=words.filter(w=>(state.weak[w.id]||0)>0);
+ let sp='denkichi_books.png';
+ if(state.streak>=30)sp='denkichi_30days.png';
+ else if(state.streak>=7)sp='denkichi_7days.png';
+ else if(rate>=90&&state.total>=10)sp='denkichi_perfect.png';
+ else if(rate>=70&&state.total>=5)sp='denkichi_correct.png';
+ setDenkichi('statsDenkichi',sp);
+ document.getElementById('statAnswered').textContent=state.total;
+ document.getElementById('statRate').textContent=rate+'%';
+ document.getElementById('statDays').textContent=Object.keys(state.days||{}).length;
+ document.getElementById('statWeak').textContent=weak.length;
  showScreen('stats');
 }
 function showAbout(){showScreen('about')}
