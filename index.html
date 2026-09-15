@@ -112,9 +112,7 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
 </section>
 
 <section id="weaklist" class="screen">
-<div class="topbar"><div></div><div class="screen-title">苦手漢字リスト</div><div></div></div>
-  <div class="stat-grid"><div class="card stat"><div id="statAnswered" class="stat-num">0</div><div class="stat-label">これまでの回答数</div></div><div class="card stat"><div id="statRate" class="stat-num">0%</div><div class="stat-label">「書けた」率</div></div><div class="card stat"><div id="statDays" class="stat-num">0</div><div class="stat-label">学習した日数</div></div><div class="card stat"><div id="statWeak" class="stat-num">0</div><div class="stat-label">苦手漢字</div></div></div>
-  <div class="section-title">苦手漢字リスト</div>
+  <div class="topbar"><button class="back" onclick="goHome()">‹ 戻る</button><div class="screen-title">苦手漢字リスト</div><div></div></div>
   <button id="weakPracticeBtn" class="primary-btn" style="margin:0 0 12px" onclick="startWeak()">苦手漢字から5問復習する →</button>
   <div id="weakList" class="weak-list"></div>
 </section>
@@ -180,7 +178,7 @@ header{padding:6px 4px 14px;text-align:center}.brand{font-size:31px;font-weight:
 const CSV_FILE='kanji.csv';
 const STORAGE_KEY='kanji-dekonai-v1'; // 以前の記録も引き継ぐ
 const FULL_CHARGE=5;
-let words=[],quizWords=[],lastQuizWords=[],qIndex=0,currentMode='チャレンジ',session={good:0,close:0,bad:0},calendarCursor=new Date(),isWeakMode=false,isEndlessMode=false,currentJudged=false;
+let words=[],quizWords=[],lastQuizWords=[],qIndex=0,currentMode='チャレンジ',session={good:0,close:0,bad:0},calendarCursor=new Date(),isWeakMode=false,isEndlessMode=false,currentJudged=false,currentJudgeType=null;
 const fallbackWords=[
 {id:'1',reading:'あいさつ',answer:'挨拶',example:'朝のあいさつをする',category:'日常',level:'3'},
 {id:'2',reading:'ふんいき',answer:'雰囲気',example:'店のふんいきがいい',category:'日常',level:'3'},
@@ -258,7 +256,7 @@ function renderGenres(){const box=document.getElementById('genreGrid');if(!box)r
 function startGenre(key){const g=genreDefs.find(x=>x.key===key);let pool=(key==='daily'||key==='random')?words:words.filter(w=>g.cats.includes(w.category));if(!pool.length)return;currentMode=g.name;isWeakMode=false;isEndlessMode=false;beginQuiz(shuffle(pool).slice(0,Math.min(10,pool.length)));}
 function startWeak(){const weak=words.filter(w=>(state.weak[w.id]||0)>0);if(!weak.length){alert('まだ苦手漢字はありません。');return;}currentMode='苦手漢字 5問';isWeakMode=true;isEndlessMode=false;beginQuiz(shuffle(weak).slice(0,Math.min(5,weak.length)));}function startEndless(){currentMode='エンドレス';isWeakMode=false;isEndlessMode=true;beginQuiz(shuffle(words));}
 function beginQuiz(list){quizWords=[...list];lastQuizWords=[...list];qIndex=0;session={good:0,close:0,bad:0};document.getElementById('modeTitle').textContent=currentMode;document.getElementById('endlessStop').classList.toggle('hide',!isEndlessMode);showScreen('quiz');renderQuestion();}
-function renderQuestion(){const w=quizWords[qIndex];currentJudged=false;document.getElementById('nextBtn').classList.remove('show');document.getElementById('weakAction').classList.remove('show');document.querySelectorAll('.judge button').forEach(b=>{b.disabled=false;b.classList.remove('selected')});document.getElementById('progressText').textContent=isEndlessMode?`${qIndex+1}問目`:`${qIndex+1} / ${quizWords.length}`;document.getElementById('progressFill').style.width=`${(qIndex/quizWords.length)*100}%`;document.getElementById('qCategory').textContent=`${w.category||'漢字'}｜この漢字を書いてみよう！`;document.getElementById('qReading').textContent=w.reading;document.getElementById('qExample').textContent=w.example?`例：${w.example}`:'';document.getElementById('qAnswer').textContent=w.answer;document.getElementById('qAnswerReading').textContent=`（${w.reading}）`;document.getElementById('answerWrap').classList.remove('show');document.getElementById('revealBtn').style.display='block';const qPics=[
+function renderQuestion(){const w=quizWords[qIndex];currentJudged=false;currentJudgeType=null;document.getElementById('nextBtn').classList.remove('show');document.getElementById('weakAction').classList.remove('show');document.querySelectorAll('.judge button').forEach(b=>{b.disabled=false;b.classList.remove('selected')});document.getElementById('progressText').textContent=isEndlessMode?`${qIndex+1}問目`:`${qIndex+1} / ${quizWords.length}`;document.getElementById('progressFill').style.width=`${(qIndex/quizWords.length)*100}%`;document.getElementById('qCategory').textContent=`${w.category||'漢字'}｜この漢字を書いてみよう！`;document.getElementById('qReading').textContent=w.reading;document.getElementById('qExample').textContent=w.example?`例：${w.example}`:'';document.getElementById('qAnswer').textContent=w.answer;document.getElementById('qAnswerReading').textContent=`（${w.reading}）`;document.getElementById('answerWrap').classList.remove('show');document.getElementById('revealBtn').style.display='block';const qPics=[
   ['denkichi_thinking.png','うーん…<br>どったけ…？'],
   ['denkichi_write.png','えいっ！<br>書いてみよう'],
   ['denkichi_home.png','今日も<br>チャージするか。'],
@@ -267,7 +265,76 @@ function renderQuestion(){const w=quizWords[qIndex];currentJudged=false;document
 const qp=qPics[qIndex%qPics.length];
 setDenkichi('quizDenkichi',qp[0],qp[1]);}
 function revealAnswer(){document.getElementById('revealBtn').style.display='none';document.getElementById('answerWrap').classList.add('show');setDenkichi('quizDenkichi','denkichi_hirameki.png','あ！<br>思い出した！');}
-function judge(type,btn){if(currentJudged)return;currentJudged=true;const w=quizWords[qIndex];session[type]++;state.total++;state[type]++;const m=weakMeta(w.id);if(type==='close'){state.weak[w.id]=(state.weak[w.id]||0)+1;m.close++;}if(type==='bad'){state.weak[w.id]=(state.weak[w.id]||0)+2;m.bad++;}const t=todayKey();state.days[t]=(state.days[t]||0)+1;updateStreak(t);saveState();document.querySelectorAll('.judge button').forEach(x=>x.disabled=true);if(btn)btn.classList.add('selected');if(type==='good')setDenkichi('quizDenkichi','denkichi_correct.png','やった！<br>チャージ！');if(type==='close')setDenkichi('quizDenkichi','denkichi_close.png','あとちょっと！');if(type==='bad')setDenkichi('quizDenkichi','denkichi_wrong.png','これは<br>覚えとこ…');if(type==='good'&&isWeakMode&&(state.weak[w.id]||0)>0)document.getElementById('weakAction').classList.add('show');const n=document.getElementById('nextBtn');n.textContent=(!isEndlessMode&&qIndex===quizWords.length-1)?'結果を見る →':'次の問題へ →';n.classList.add('show');}
+function judge(type,btn){
+ const w=quizWords[qIndex];
+ const t=todayKey();
+
+ // すでにこの問題を判定済みなら、前の判定だけ取り消す
+ if(currentJudgeType){
+   session[currentJudgeType]=Math.max(0,session[currentJudgeType]-1);
+   state[currentJudgeType]=Math.max(0,state[currentJudgeType]-1);
+
+   const m=weakMeta(w.id);
+   if(currentJudgeType==='close'){
+     state.weak[w.id]=Math.max(0,(state.weak[w.id]||0)-1);
+     m.close=Math.max(0,(m.close||0)-1);
+   }
+   if(currentJudgeType==='bad'){
+     state.weak[w.id]=Math.max(0,(state.weak[w.id]||0)-2);
+     m.bad=Math.max(0,(m.bad||0)-1);
+   }
+   if((state.weak[w.id]||0)<=0){
+     delete state.weak[w.id];
+     if((m.close||0)<=0 && (m.bad||0)<=0) delete state.weakMeta[w.id];
+   }
+ }else{
+   // 初回判定のときだけ回答数・今日の学習数を加算
+   state.total++;
+   state.days[t]=(state.days[t]||0)+1;
+   updateStreak(t);
+ }
+
+ currentJudgeType=type;
+ currentJudged=true;
+ session[type]++;
+ state[type]++;
+
+ const m=weakMeta(w.id);
+ if(type==='close'){
+   state.weak[w.id]=(state.weak[w.id]||0)+1;
+   m.close=(m.close||0)+1;
+ }
+ if(type==='bad'){
+   state.weak[w.id]=(state.weak[w.id]||0)+2;
+   m.bad=(m.bad||0)+1;
+ }
+
+ saveState();
+
+ // 3つとも押せるままにして、選んだものだけ色を変える
+ document.querySelectorAll('.judge button').forEach(x=>{
+   x.disabled=false;
+   x.classList.remove('selected');
+ });
+ if(btn)btn.classList.add('selected');
+
+ if(type==='good')setDenkichi('quizDenkichi','denkichi_correct.png','やった！<br>チャージ！');
+ if(type==='close')setDenkichi('quizDenkichi','denkichi_close.png','あとちょっと！');
+ if(type==='bad')setDenkichi('quizDenkichi','denkichi_wrong.png','これは<br>覚えとこ…');
+
+ // 苦手復習中に「書けた！」なら、外すか残すか選択
+ const wa=document.getElementById('weakAction');
+ if(isWeakMode && type==='good' && (state.weak[w.id]||0)>0){
+   wa.innerHTML='<b>この漢字を苦手リストからどうする？</b><div class="weak-action-row"><button onclick="setWeakRemoval(true)">✓ 外す</button><button onclick="setWeakRemoval(false)">まだ残す</button></div>';
+   wa.classList.add('show');
+ }else{
+   wa.classList.remove('show');
+ }
+
+ const n=document.getElementById('nextBtn');
+ n.textContent=(!isEndlessMode&&qIndex===quizWords.length-1)?'結果を見る →':'次の問題へ →';
+ n.classList.add('show');
+}
 function setWeakRemoval(remove){const w=quizWords[qIndex];if(remove){delete state.weak[w.id];delete state.weakMeta[w.id];}saveState();document.getElementById('weakAction').innerHTML='<b>'+(remove?'✓ 苦手リストから外します':'このまま苦手リストに残します')+'</b>';}
 function nextQuestion(){if(!currentJudged)return;if(isEndlessMode){qIndex++;if(qIndex>=quizWords.length)quizWords=quizWords.concat(shuffle(words));renderQuestion();return;}qIndex++;if(qIndex>=quizWords.length)finishQuiz();else renderQuestion();}
 function finishEndless(){if(session.good+session.close+session.bad===0)return goHome();finishQuiz();}
@@ -311,7 +378,7 @@ function showWeakList(){
  showScreen('weaklist');
 }
 function showStats(){
- const rate=state.total?Math.round(state.good/state.total*100):0;
+ const rate=state.total?Math.round((state.good||0)/state.total*100):0;
  const weak=words.filter(w=>(state.weak[w.id]||0)>0);
  let sp='denkichi_books.png';
  if(state.streak>=30)sp='denkichi_30days.png';
@@ -319,10 +386,13 @@ function showStats(){
  else if(rate>=90&&state.total>=10)sp='denkichi_perfect.png';
  else if(rate>=70&&state.total>=5)sp='denkichi_correct.png';
  setDenkichi('statsDenkichi',sp);
- document.getElementById('statAnswered').textContent=state.total;
- document.getElementById('statRate').textContent=rate+'%';
- document.getElementById('statDays').textContent=Object.keys(state.days||{}).length;
- document.getElementById('statWeak').textContent=weak.length;
+ const vals={
+   statAnswered:state.total||0,
+   statRate:rate+'%',
+   statDays:Object.keys(state.days||{}).filter(k=>(state.days[k]||0)>0).length,
+   statWeak:weak.length
+ };
+ Object.entries(vals).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.textContent=val;});
  showScreen('stats');
 }
 function showAbout(){showScreen('about')}
