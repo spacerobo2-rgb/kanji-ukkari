@@ -509,7 +509,7 @@ function renderGenres(){const box=document.getElementById('genreGrid');if(!box)r
 function startGenre(key){const g=genreDefs.find(x=>x.key===key);let base=activeWords();let pool=(key==='daily'||key==='random')?base:base.filter(w=>g.cats.includes(w.category));if(!pool.length)return;currentMode=g.name;isWeakMode=false;isEndlessMode=false;beginQuiz(shuffle(pool).slice(0,Math.min(10,pool.length)));}
 function startWeak(){const weak=words.filter(w=>(state.weak[w.id]||0)>0&&!state.abandoned[w.id]);if(!weak.length){alert('まだ苦手漢字はありません。');return;}currentMode='苦手漢字 5問';isWeakMode=true;isEndlessMode=false;beginQuiz(shuffle(weak).slice(0,Math.min(5,weak.length)));}function startEndless(){const pool=activeWords();if(!pool.length){alert('出題できる漢字がありません。');return;}currentMode='エンドレス';isWeakMode=false;isEndlessMode=true;beginQuiz(shuffle(pool));}
 function beginQuiz(list){quizWords=[...list];lastQuizWords=[...list];qIndex=0;session={good:0,close:0,bad:0};document.getElementById('modeTitle').textContent=currentMode;document.getElementById('endlessStop').classList.toggle('hide',!isEndlessMode);showScreen('quiz');renderQuestion();}
-function renderQuestion(){const w=quizWords[qIndex];currentJudged=false;currentJudgeType=null;document.getElementById('nextBtn').classList.remove('show');document.getElementById('weakAction').classList.remove('show');document.querySelectorAll('.judge button').forEach(b=>{b.disabled=false;b.classList.remove('selected')});document.getElementById('progressText').textContent=isEndlessMode?`${qIndex+1}問目`:`${qIndex+1} / ${quizWords.length}`;document.getElementById('progressFill').style.width=`${(qIndex/quizWords.length)*100}%`;document.getElementById('qCategory').textContent=`${w.category||'漢字'}｜この漢字を書いてみよう！`;document.getElementById('qReading').textContent=w.reading;document.getElementById('qExample').textContent=''?`例：${w.example}`:'';document.getElementById('qAnswer').textContent=w.answer;document.getElementById('qAnswerReading').textContent=`（${w.reading}）`;document.getElementById('answerWrap').classList.remove('show');document.getElementById('revealBtn').style.display='block';const qPics=['denkichi_thinking.png','denkichi_write.png','denkichi_home.png','denkichi_thinking.png'];
+function renderQuestion(){const w=quizWords[qIndex];currentJudged=false;currentJudgeType=null;document.getElementById('nextBtn').classList.remove('show');document.getElementById('weakAction').classList.remove('show');document.querySelectorAll('.judge button').forEach(b=>{b.disabled=false;b.classList.remove('selected')});document.getElementById('progressText').textContent=isEndlessMode?`${qIndex+1}問目`:`${qIndex+1} / ${quizWords.length}`;document.getElementById('progressFill').style.width=`${(qIndex/quizWords.length)*100}%`;document.getElementById('qCategory').textContent=`${w.category||'漢字'}｜この漢字を書いてみよう！`;document.getElementById('qReading').textContent=w.reading;document.getElementById('qExample').innerHTML=w.example?`例：${maskedExample(w)}`:'';document.getElementById('qAnswer').textContent=w.answer;document.getElementById('qAnswerReading').textContent=`（${w.reading}）`;document.getElementById('answerWrap').classList.remove('show');document.getElementById('revealBtn').style.display='block';const qPics=['denkichi_thinking.png','denkichi_write.png','denkichi_home.png','denkichi_thinking.png'];
  const qp=qPics[qIndex%qPics.length];
  setDenkichi('quizDenkichi',qp,denkichiSay('think'));}
 function revealAnswer(){document.getElementById('revealBtn').style.display='none';document.getElementById('answerWrap').classList.add('show');setDenkichi('quizDenkichi','denkichi_hirameki.png',denkichiSay('reveal'));}
@@ -677,7 +677,15 @@ function showStats(){
  renderBadges();showScreen('stats');
 }
 function showAbout(){showScreen('about')}
-function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}
+function escapeHtml(s){
+  return String(s).replace(/[&<>'"]/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    "'":'&#39;',
+    '"':'&quot;'
+  }[c]));
+}
 
 function maskedExample(w){
   const example=String(w.example||'');
@@ -688,7 +696,6 @@ function maskedExample(w){
   // 答えが例文中に複数回あってもすべて伏せる
   return escapeHtml(example).split(escapeHtml(answer)).join(`<span class="answer-blank">${blank}</span>`);
 }
-[c]));}
 function resetStats(){if(confirm('成績・苦手・カレンダーの記録をすべてリセットしますか？')){state=defaultState();saveState();refreshHome();showStats();}}
 loadWords();
 </script>
